@@ -1,0 +1,3 @@
+destination = '~/.config/awesome'
+reload = "echo 'awesome.restart()' | awesome-client"
+
