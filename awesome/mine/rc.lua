@@ -313,8 +313,8 @@ globalkeys = gears.table.join(
         { description = "lua execute prompt", group = "awesome" }),
 
     -- custom stuff
-    awful.key({ modkey, "Ctrl" }, "space", function() awful.spawn("instantmenu_run") end,
-        { description = "open a applauncher" }),
+    ---awful.key({ modkey, "Ctrl" }, "space", function() awful.spawn("instantmenu_run") end,
+    ---    { description = "open a applauncher" }),
     awful.key({ modkey }, "n", function() awful.spawn("instantutils open filemanager") end,
         { description = "open a applauncher" }),
     awful.key({ modkey }, "b", function() awful.spawn("instantutils open browser") end,
@@ -325,9 +325,14 @@ globalkeys = gears.table.join(
         { description = "instantkeyswitch" }),
     awful.key({ modkey, "Ctrl" }, "q", function() awful.spawn("instantshutdown") end,
         { description = "instantshutdown" }),
-    awful.key({ modkey }, "s", function() scratch.toggle("alacritty --class scratchpad", { instance = "scratchpad" }) end
-        ,
-        { description = "instantshutdown" }),
+    awful.key({ modkey }, "s", function() scratch.toggle("alacritty --class scratchpad", { instance = "scratchpad" }) end,
+        { description = "scratchpad" }),
+
+    --- rofi
+    awful.key({ modkey }, "y", function() awful.spawn(dir .. "/scripts/rofi/launcher") end,
+        { description = "instantassist" }),
+    awful.key({ modkey, "Ctrl" }, "space", function() awful.spawn(dir .. "/scripts/rofi/runner") end,
+        { description = "open a applauncher" }),
 
     -- switching layouts
     awful.key({ modkey }, "t", function() awful.layout.set(awful.layout.suit.tile) end,
