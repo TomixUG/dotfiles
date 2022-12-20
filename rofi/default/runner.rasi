@@ -16,7 +16,8 @@ window {
     background-color:               @BG;
     text-color:                     @FG;
     border-radius:                  10px;
-    width:                          350px;
+    width:                          600px;
+    height:                         400px;
     location:                       center;
     anchor:                         center;
     x-offset:                       0;
@@ -36,8 +37,8 @@ textbox-prompt-colon {
     border-radius:                  100%;
     background-color:               @SEL;
     text-color:                     @BG;
-    padding:                        8px 12px 8px 12px;
-	font:							"Iosevka Nerd Font 10";
+    padding:                        8px 18px 8px 12px;
+	font:							"Iosevka Nerd Font 12";
 }
 
 entry {
