@@ -244,20 +244,10 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, ".", function() awful.screen.focus_relative(1) end,
         { description = "focus the next screen", group = "screen" }),
     awful.key({ modkey }, ",", function() awful.screen.focus_relative(-1) end,
-
-
         { description = "focus the previous screen", group = "screen" }),
 
     awful.key({ modkey, }, "u", awful.client.urgent.jumpto,
         { description = "jump to urgent client", group = "client" }),
-    awful.key({ modkey, }, "Tab",
-        function()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end,
-        { description = "go back", group = "client" }),
 
     -- Standard program
     awful.key({ modkey, }, "Return", function() awful.spawn(terminal) end,
@@ -296,21 +286,6 @@ globalkeys = gears.table.join(
             end
         end,
         { description = "restore minimized", group = "client" }),
-
-    -- Prompt
-    awful.key({ modkey }, "r", function() awful.screen.focused().mypromptbox:run() end,
-        { description = "run prompt", group = "launcher" }),
-
-    awful.key({ modkey }, "x",
-        function()
-            awful.prompt.run {
-                prompt       = "Run Lua code: ",
-                textbox      = awful.screen.focused().mypromptbox.widget,
-                exe_callback = awful.util.eval,
-                history_path = awful.util.get_cache_dir() .. "/history_eval"
-            }
-        end,
-        { description = "lua execute prompt", group = "awesome" }),
 
     -- custom stuff
     ---awful.key({ modkey, "Ctrl" }, "space", function() awful.spawn("instantmenu_run") end,
@@ -370,27 +345,6 @@ clientkeys = gears.table.join(
         {description = "minimize", group = "client"}),
 --]]
     --
-    awful.key({ modkey, }, "m",
-        function(c)
-            c.maximized = not c.maximized
-            c:raise()
-        end,
-        { description = "(un)maximize", group = "client" }),
-
-
-
-    awful.key({ modkey, "Control" }, "m",
-        function(c)
-            c.maximized_vertical = not c.maximized_vertical
-            c:raise()
-        end,
-        { description = "(un)maximize vertically", group = "client" }),
-    awful.key({ modkey, "Shift" }, "m",
-        function(c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c:raise()
-        end,
-        { description = "(un)maximize horizontally", group = "client" }),
 
     awful.key({ modkey, "Shift" }, "Return", function(c) c:swap(awful.client.getmaster()) end,
         { description = "move to master", group = "client" }),
@@ -436,18 +390,7 @@ for i = 1, 9 do
                     end
                 end
             end,
-            { description = "move focused client to tag #" .. i, group = "tag" }),
-        -- Toggle tag on focused client.
-        awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
-            function()
-                if client.focus then
-                    local tag = client.focus.screen.tags[i]
-                    if tag then
-                        client.focus:toggle_tag(tag)
-                    end
-                end
-            end,
-            { description = "toggle focused client on tag #" .. i, group = "tag" })
+            { description = "move focused client to tag #" .. i, group = "tag" })
     )
 end
 
