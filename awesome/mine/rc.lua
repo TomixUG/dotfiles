@@ -543,7 +543,15 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
--- }}}
+
+-- make all floating windows always on top
+client.connect_signal("property::floating", function(c)
+    if c.floating then
+        c.ontop = true
+    else
+        c.ontop = false
+    end
+end)
 
 -- autostart
 awful.spawn(dir .. "scripts/autostart.sh") 
