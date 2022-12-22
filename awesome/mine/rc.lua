@@ -546,11 +546,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- make all floating windows always on top
 client.connect_signal("property::floating", function(c)
-    if c.floating then
-        c.ontop = true
-    else
-        c.ontop = false
-    end
+    c.ontop = c.floating and not c.fullscreen
 end)
 
 -- autostart
