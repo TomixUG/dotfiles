@@ -290,15 +290,15 @@ globalkeys = gears.table.join(
     -- custom stuff
     ---awful.key({ modkey, "Ctrl" }, "space", function() awful.spawn("instantmenu_run") end,
     ---    { description = "open a applauncher" }),
-    awful.key({ modkey }, "n", function() awful.spawn("instantutils open filemanager") end,
-        { description = "open a applauncher" }),
-    awful.key({ modkey }, "b", function() awful.spawn("instantutils open browser") end,
+    awful.key({ modkey }, "n", function() awful.spawn("thunar") end,
+        { description = "open filemanager" }),
+    awful.key({ modkey }, "b", function() awful.spawn("brave") end,
         { description = "open browser" }),
-    awful.key({ modkey }, "a", function() awful.spawn(dir .. "/scripts/instantASSIST/instantassist") end,
+    awful.key({ modkey }, "a", function() awful.spawn(dir .. "/scripts/instantASSIST/instantassist", false) end,
         { description = "instantassist" }),
-    awful.key({ modkey, "Mod1" }, "space", function() awful.spawn("instantkeyswitch") end,
+    awful.key({ modkey, "Mod1" }, "space", function() awful.spawn("instantkeyswitch", false) end,
         { description = "instantkeyswitch" }),
-    awful.key({ modkey, "Ctrl" }, "q", function() awful.spawn("instantshutdown") end,
+    awful.key({ modkey, "Ctrl" }, "q", function() awful.spawn("instantshutdown", false) end,
         { description = "instantshutdown" }),
     awful.key({ modkey }, "s", function() scratch.toggle("alacritty --class scratchpad", { instance = "scratchpad" }) end,
         { description = "scratchpad" }),
@@ -323,16 +323,16 @@ globalkeys = gears.table.join(
 
     -- XF86 keys 
     awful.key({ }, "XF86MonBrightnessUp", function ()
-        awful.spawn(dir .. "scripts/brightness.sh up") end),
+        awful.spawn(dir .. "scripts/brightness.sh up", false) end),
     awful.key({ }, "XF86MonBrightnessDown", function ()
-        awful.spawn(dir .. "scripts/brightness.sh down") end),
+        awful.spawn(dir .. "scripts/brightness.sh down", false) end),
 
     awful.key({ }, "XF86AudioRaiseVolume", function ()
-        awful.spawn(dir .. "scripts/volume.sh up") end),
+        awful.spawn(dir .. "scripts/volume.sh up", false) end),
     awful.key({ }, "XF86AudioLowerVolume", function ()
-        awful.spawn(dir .. "scripts/volume.sh down") end),
+        awful.spawn(dir .. "scripts/volume.sh down", false) end),
     awful.key({ }, "XF86AudioMute", function ()
-        awful.spawn(dir .. "scripts/volume.sh mute") end)
+        awful.spawn(dir .. "scripts/volume.sh mute", false) end)
 )
 
 clientkeys = gears.table.join(
@@ -563,4 +563,4 @@ client.connect_signal("property::floating", function(c)
 end)
 
 -- autostart
-awful.spawn(dir .. "scripts/autostart.sh") 
+awful.spawn(dir .. "scripts/autostart.sh", false) 
