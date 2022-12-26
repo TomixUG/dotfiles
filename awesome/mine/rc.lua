@@ -319,7 +319,13 @@ globalkeys = gears.table.join(
         function()
             awful.client.floating.toggle()
         end,
-        { description = "toggle floating", group = "client" })
+        { description = "toggle floating", group = "client" }),
+
+    -- XF86 keys 
+    awful.key({ }, "XF86MonBrightnessDown", function ()
+        awful.spawn(dir .. "scripts/brightness.sh down") end),
+    awful.key({ }, "XF86MonBrightnessUp", function ()
+        awful.spawn(dir .. "scripts/brightness.sh up") end)
 
 )
 
