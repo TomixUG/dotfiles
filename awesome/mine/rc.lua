@@ -322,11 +322,17 @@ globalkeys = gears.table.join(
         { description = "toggle floating", group = "client" }),
 
     -- XF86 keys 
+    awful.key({ }, "XF86MonBrightnessUp", function ()
+        awful.spawn(dir .. "scripts/brightness.sh up") end),
     awful.key({ }, "XF86MonBrightnessDown", function ()
         awful.spawn(dir .. "scripts/brightness.sh down") end),
-    awful.key({ }, "XF86MonBrightnessUp", function ()
-        awful.spawn(dir .. "scripts/brightness.sh up") end)
 
+    awful.key({ }, "XF86AudioRaiseVolume", function ()
+        awful.spawn(dir .. "scripts/volume.sh up") end),
+    awful.key({ }, "XF86AudioLowerVolume", function ()
+        awful.spawn(dir .. "scripts/volume.sh down") end),
+    awful.key({ }, "XF86AudioMute", function ()
+        awful.spawn(dir .. "scripts/volume.sh mute") end)
 )
 
 clientkeys = gears.table.join(
