@@ -2,8 +2,6 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
-local Util = require("lazyvim.util")
-
 local function map(mode, lhs, rhs, opts)
   local keys = require("lazy.core.handler").handlers.keys
   ---@cast keys LazyKeysHandler
@@ -15,3 +13,11 @@ end
 
 map("n", "<A-l>", "<cmd>BufferLineMoveNext<cr>", { desc = "Move buffer next" })
 map("n", "<A-h>", "<cmd>BufferLineMovePrev<cr>", { desc = "Move buffer prev" })
+
+-- open terminal :TODO make smarter
+map(
+  "n",
+  "<leader>t",
+  ":sp<bar>terminal<cr>:resize12<cr>:set nonumber<cr>:set norelativenumber<cr>",
+  { desc = "Open terminal" }
+)
