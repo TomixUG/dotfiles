@@ -56,8 +56,8 @@ return {
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
           ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<S-j>"] = cmp.mapping.select_next_item(), -- move in the menu using j
-          ["<S-k>"] = cmp.mapping.select_prev_item(), -- move in the menu using k
+          ["<C-j>"] = cmp.mapping.select_next_item(), -- move in the menu using j
+          ["<C-k>"] = cmp.mapping.select_prev_item(), -- move in the menu using k
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
