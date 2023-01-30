@@ -103,8 +103,12 @@ return {
       },
     },
   },
+  {
+    "rcarriga/nvim-notify",
+    enabled = false,
+  },
+  { "simrat39/rust-tools.nvim" },
   { "Mofiqul/vscode.nvim" },
   -- { "olimorris/onedarkpro.nvim" },
   { "navarasu/onedark.nvim" },
-  { "simrat39/rust-tools.nvim" },
 }
