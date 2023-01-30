@@ -1,0 +1,9 @@
+belak/zsh-utils path:completion
+
+zsh-users/zsh-completions
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-syntax-highlighting
+
+Aloxaf/fzf-tab
+ohmyzsh/ohmyzsh path:plugins/autojump
+ohmyzsh/ohmyzsh path:lib/history.zsh # fixes not working history
