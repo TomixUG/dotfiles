@@ -1,0 +1,11 @@
+start = [
+  "notify-send 'Profile set!'",
+  "notify-send 'You are now using profile ~mine~ :)'"
+]
+
+[dots]
+awesome = "mine"
+rofi = "default"
+dunst = "instantos"
+nvim = "mine"
+alacritty = "mine"
