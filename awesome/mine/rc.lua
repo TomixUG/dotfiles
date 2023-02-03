@@ -322,7 +322,7 @@ globalkeys = gears.table.join(
 		awful.spawn("instantkeyswitch", false)
 	end, { description = "instantkeyswitch" }),
 	awful.key({ modkey, "Ctrl" }, "q", function()
-		awful.spawn("instantshutdown", false)
+		awful.spawn(dir .. "scripts/shutdown.sh", false)
 	end, { description = "instantshutdown" }),
 	awful.key({ modkey }, "s", function()
 		scratch.toggle("alacritty --class scratchpad", { instance = "scratchpad" })
