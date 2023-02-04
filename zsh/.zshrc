@@ -18,3 +18,5 @@ alias v=nvim
 
 setopt globdots # dot files in tab completion
 setopt sharehistory
+
+export EDITOR=nvim
