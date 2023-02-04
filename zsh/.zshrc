@@ -1,4 +1,4 @@
-# Created by newuser for 5.9
+# eval "$(zellij setup --generate-auto-start zsh)"
 eval "$(starship init zsh)"
 
 bindkey '^ ' autosuggest-accept # ctrl + enter to accept suggestion
@@ -8,6 +8,7 @@ source '/usr/share/zsh-antidote/antidote.zsh'
 antidote load
 
 alias ls='exa -F'
+alias z='zellij'
 
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
