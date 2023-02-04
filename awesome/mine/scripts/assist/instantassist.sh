@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCATION="/home/$USER/.dothub/awesome/mine/scripts/instantASSIST"
+LOCATION="/home/$USER/.dothub/awesome/mine/scripts/assist"
 
 ASSIST=$(ls $LOCATION/assists | sed 's/.sh//' | rofi -dmenu -auto-select -theme ~/.config/rofi/runner.rasi | grep -o '^.')
 

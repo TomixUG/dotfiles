@@ -316,7 +316,7 @@ globalkeys = gears.table.join(
 		awful.spawn("brave")
 	end, { description = "open browser" }),
 	awful.key({ modkey }, "a", function()
-		awful.spawn(dir .. "/scripts/instantASSIST/instantassist.sh", false)
+		awful.spawn(dir .. "/scripts/assist/instantassist.sh", false)
 	end, { description = "instantassist" }),
 	awful.key({ modkey, "Mod1" }, "space", function()
 		awful.spawn(dir .. "scripts/keyswitch.sh", false)
