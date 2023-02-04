@@ -316,7 +316,7 @@ globalkeys = gears.table.join(
 		awful.spawn("brave")
 	end, { description = "open browser" }),
 	awful.key({ modkey }, "a", function()
-		awful.spawn(dir .. "/scripts/instantASSIST/instantassist", false)
+		awful.spawn(dir .. "/scripts/instantASSIST/instantassist.sh", false)
 	end, { description = "instantassist" }),
 	awful.key({ modkey, "Mod1" }, "space", function()
 		awful.spawn(dir .. "scripts/keyswitch.sh", false)
@@ -490,6 +490,7 @@ awful.rules.rules = {
 				"Wpa_gui",
 				"veromix",
 				"xtightvncviewer",
+				"screenfreeze",
 			},
 
 			-- Note that the name property shown in xprop might be set slightly after creation of the client
