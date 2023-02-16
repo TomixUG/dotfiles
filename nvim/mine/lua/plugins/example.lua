@@ -107,6 +107,18 @@ return {
     "rcarriga/nvim-notify",
     enabled = false,
   },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    opts = {
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = false,
+        },
+      },
+    },
+  },
   { "simrat39/rust-tools.nvim" },
   { "Mofiqul/vscode.nvim" },
   -- { "olimorris/onedarkpro.nvim" },
