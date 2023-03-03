@@ -18,6 +18,6 @@ map("n", "<A-h>", "<cmd>BufferLineMovePrev<cr>", { desc = "Move buffer prev" })
 map(
   "n",
   "<leader>t",
-  ":sp<bar>terminal<cr>:resize12<cr>:set nonumber<cr>:set norelativenumber<cr>",
+  ":sp<bar>terminal<cr>:resize12<cr>:set winfixheight<cr>:set nonumber<cr>:set norelativenumber<cr>",
   { desc = "Open terminal" }
 )
