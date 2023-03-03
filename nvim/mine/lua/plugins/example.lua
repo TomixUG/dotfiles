@@ -119,6 +119,7 @@ return {
       },
     },
   },
+  { "themaxmarchuk/tailwindcss-colors.nvim" },
   { "simrat39/rust-tools.nvim" },
   { "Mofiqul/vscode.nvim" },
   -- { "olimorris/onedarkpro.nvim" },
