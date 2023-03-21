@@ -88,33 +88,10 @@ addEWMHFullscreen   = do
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
-clipboardy :: MonadIO m => m () -- Don't question it 
-clipboardy = spawn "rofi -modi \"\63053 :greenclip print\" -show \"\63053 \" -run-command '{cmd}' -theme ~/.config/rofi/launcher/style.rasi"
-
-centerlaunch = spawn "exec ~/bin/eww open-many blur_full weather profile quote search_full disturb-icon vpn-icon home_dir screenshot power_full reboot_full lock_full logout_full suspend_full"
-sidebarlaunch = spawn "exec ~/bin/eww open-many weather_side time_side smol_calendar player_side sys_side sliders_side"
-ewwclose = spawn "exec ~/bin/eww close-all"
-maimcopy = spawn "maim -s | xclip -selection clipboard -t image/png && notify-send \"Screenshot\" \"Copied to Clipboard\" -i flameshot"
-maimsave = spawn "maim -s ~/Desktop/$(date +%Y-%m-%d_%H-%M-%S).png && notify-send \"Screenshot\" \"Saved to Desktop\" -i flameshot"
-rofi_launcher = spawn "rofi -no-lazy-grab -show drun -modi run,drun,window -theme $HOME/.config/rofi/launcher/style -drun-icon-theme \"candy-icons\" "
-
-
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
     [ ((modm, xK_Return), spawn $ XMonad.terminal conf)
-
-    -- lock screen
-    , ((modm,               xK_F1    ), spawn "betterlockscreen -l")
-
-    -- launch rofi and dashboard
-    , ((modm,               xK_o     ), rofi_launcher)
-    , ((modm,               xK_p     ), centerlaunch)
-    , ((modm .|. shiftMask, xK_p     ), ewwclose)
-
-    -- launch eww sidebar
-    , ((modm,               xK_s     ), sidebarlaunch)
-    , ((modm .|. shiftMask, xK_s     ), ewwclose)
 
     -- Audio keys
     , ((0,                    xF86XK_AudioPlay), spawn "playerctl play-pause")
@@ -129,19 +106,20 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((0,                    xF86XK_MonBrightnessDown), spawn "brightnessctl s 10-%")
  
     -- Screenshot
-    , ((0,                    xK_Print), maimcopy)
-    , ((modm,                 xK_Print), maimsave)
+    , ((0,                    xK_Print), spawn "flameshot full --clipboard")
+    , ((modm,                 xK_Print), spawn "flameshot gui")
 
     -- My Stuff
-    , ((modm,               xK_b     ), spawn "exec ~/bin/bartoggle")
-    , ((modm,               xK_z     ), spawn "exec ~/bin/inhibit_activate")
-    , ((modm .|. shiftMask, xK_z     ), spawn "exec ~/bin/inhibit_deactivate")
-    , ((modm .|. shiftMask, xK_a     ), clipboardy)
-    -- Turn do not disturb on and off
-    , ((modm,               xK_d     ), spawn "exec ~/bin/do_not_disturb.sh")
+    , ((modm,               xK_y     ), spawn "exec ~/.xmonad/scripts/rofi/launcher")
+    , ((modm .|. controlMask,  xK_space  ), spawn "exec ~/.xmonad/scripts/rofi/runner")
+    , ((modm .|. mod1Mask,  xK_space  ), spawn "exec ~/.xmonad/scripts/keyswitch.sh")
+    , ((modm,               xK_a     ), spawn "exec ~/.xmonad/scripts/assist/instantassist.sh")
+    , ((modm,               xK_n     ), spawn "thunar")
+    , ((modm,               xK_b     ), spawn "brave")
 
     -- close focused window
-    , ((modm .|. shiftMask, xK_c     ), kill)
+    , ((modm, xK_q     ), kill)
+
 
     -- GAPS!!!
     , ((modm .|. controlMask, xK_g), sendMessage $ ToggleGaps)               -- toggle all gaps
@@ -161,33 +139,31 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
      -- Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
-
     --  Reset the layouts on the current workspace to default
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
-    -- Resize viewed windows to the correct size
-    , ((modm,               xK_n     ), refresh)
+    -- Switch to layout FIXME:
+    -- , ((modm,               xK_m ), sendMessage $ JumpToLayout "full")
 
-    -- Move focus to the next window
-    , ((modm,               xK_Tab   ), windows W.focusDown)
+    -- Resize viewed windows to the correct size
+    -- , ((modm,               xK_n     ), refresh)
 
     -- Move focus to the next window
     , ((modm,               xK_j     ), windows W.focusDown)
-
     -- Move focus to the previous window
     , ((modm,               xK_k     ), windows W.focusUp  )
 
     -- Move focus to the master window
-    , ((modm,               xK_m     ), windows W.focusMaster  )
+    --
+    , ((modm .|. shiftMask,               xK_m     ), windows W.focusMaster  )
 
     -- Swap the focused window and the master window
     , ((modm .|. shiftMask,               xK_Return), windows W.swapMaster)
 
     -- Swap the focused window with the next window
-    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
-
+    , ((modm .|. controlMask, xK_j     ), windows W.swapDown  )
     -- Swap the focused window with the previous window
-    , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
+    , ((modm .|. controlMask, xK_k     ), windows W.swapUp    )
 
     -- Shrink the master area
     , ((modm,               xK_h     ), sendMessage Shrink)
@@ -200,7 +176,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Increment the number of windows in the master area
     , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
-
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
@@ -211,10 +186,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
     -- Quit xmonad
-    , ((modm .|. shiftMask, xK_q     ), spawn "~/bin/powermenu.sh")
+    , ((modm .|. controlMask, xK_q     ), spawn "~/.xmonad/scripts/shutdown.sh")
 
     -- Restart xmonad
-    , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
+    , ((modm  .|. controlMask , xK_r     ), spawn "xmonad --recompile; xmonad --restart")
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
     , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
