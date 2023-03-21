@@ -29,6 +29,10 @@ import XMonad.Layout.Gaps
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 import Data.Maybe (maybeToList)
+
+import XMonad.Util.NamedWindows (getName)
+import Data.List (sortBy)
+import Data.Function (on)
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
@@ -292,15 +296,6 @@ myManageHook = fullscreenManageHook <+> manageDocks <+> composeAll
 --
 myEventHook = mempty
 
-
-------------------------------------------------------------------------
--- Status bars and logging
-
--- Perform an arbitrary action on each internal state change or X event.
--- See the 'XMonad.Hooks.DynamicLog' extension for examples.
---
-myLogHook = return ()
-
 ------------------------------------------------------------------------
 -- Startup hook
 
@@ -318,6 +313,8 @@ myStartupHook = do
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = xmonad $ fullscreenSupport $ docks $ ewmh defaults
+
+myBar = "polybar"
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
@@ -341,12 +338,27 @@ defaults = def {
         mouseBindings      = myMouseBindings,
 
       -- hooks, layouts
+        logHook = eventLogHookForPolyBar,
         manageHook = myManageHook, 
         layoutHook = gaps [(L,30), (R,30), (U,40), (D,60)] $ spacingRaw True (Border 10 10 10 10) True (Border 10 10 10 10) True $ smartBorders $ myLayout,
         handleEventHook    = myEventHook,
-        logHook            = myLogHook,
         startupHook        = myStartupHook >> addEWMHFullscreen
     }
+
+eventLogHookForPolyBar = do
+  winset <- gets windowset
+  title <- maybe (return "") (fmap show . getName) . W.peek $ winset
+  let currWs = W.currentTag winset
+  let wss = map W.tag $ W.workspaces winset
+
+  io $ appendFile "/tmp/.xmonad-title-log" (title ++ "\n")
+  io $ appendFile "/tmp/.xmonad-workspace-log" (wsStr currWs wss ++ "\n")
+
+  where
+    fmt currWs ws
+          | currWs == ws = "[" ++ ws ++ "]"
+          | otherwise    = " " ++ ws ++ " "
+    wsStr currWs wss = join $ map (fmt currWs) $ sortBy (compare `on` (!! 0)) wss
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
 help :: String
