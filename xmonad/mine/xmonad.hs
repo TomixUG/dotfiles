@@ -33,6 +33,8 @@ import Data.Maybe (maybeToList)
 import XMonad.Util.NamedWindows (getName)
 import Data.List (sortBy)
 import Data.Function (on)
+import XMonad.Hooks.SetWMName
+import XMonad.Hooks.TaffybarPagerHints (pagerHints) -- for xprop -root
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
@@ -306,13 +308,14 @@ myEventHook = mempty
 -- By default, do nothing.
 myStartupHook = do
   spawnOnce "exec ~/.xmonad/scripts/autostart.sh"
+  setWMName "LG3D"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad $ fullscreenSupport $ docks $ ewmh defaults
+main = xmonad $ fullscreenSupport $ docks $ ewmh . pagerHints $ defaults
 
 myBar = "polybar"
 
