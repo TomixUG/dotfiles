@@ -66,6 +66,9 @@ import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 
 import XMonad.Layout.IndependentScreens
 import XMonad.Actions.UpdatePointer
+import XMonad.Actions.UpdateFocus
+
+import XMonad.Util.NamedScratchpad
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -226,6 +229,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
 
+
+    -- scratchpads
+    , ((modm,  xK_s     ), namedScratchpadAction myScratchPads "terminal")
+    -- , ((modm,  xK_s     ), namedScratchpadAction myScratchPads "mocp")
+
     -- Quit xmonad
     , ((modm .|. controlMask, xK_q     ), spawn "~/.xmonad/scripts/shutdown.sh")
 
@@ -309,7 +317,7 @@ myManageHook = fullscreenManageHook <+> manageDocks <+> composeAll
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , isFullscreen --> doFullFloat
-                                 ]
+                                 ] <+> namedScratchpadManageHook myScratchPads
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -333,6 +341,29 @@ myEventHook = mempty
 myStartupHook = do
   spawnOnce "exec ~/.xmonad/scripts/autostart.sh"
   setWMName "LG3D"
+
+-- scratchpads
+myScratchPads :: [NamedScratchpad]
+myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
+                -- , NS "mocp" spawnMocp findMocp manageMocp
+                ]
+  where
+    spawnTerm  = myTerminal ++ " -T scratchpad"
+    findTerm   = title =? "scratchpad"
+    manageTerm = customFloating $ W.RationalRect l t w h
+               where
+                 h = 0.6
+                 w = 0.6
+                 t = 0.8 -h
+                 l = 0.8 -w
+    -- spawnMocp  = myTerminal ++ " -t mocp -e mocp"
+    -- findMocp   = title =? "mocp"
+    -- manageMocp = customFloating $ W.RationalRect l t w h
+    --            where
+    --              h = 0.9
+    --              w = 0.9
+    --              t = 0.95 -h
+    --              l = 0.95 -w
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
@@ -470,11 +501,14 @@ defaults = def {
         mouseBindings      = myMouseBindings,
 
       -- hooks, layouts
-        logHook = eventLogHookForPolyBar,
+        -- logHook = eventLogHookForPolyBar <> updatePointer (0.5, 0.5) (0, 0),
         manageHook = myManageHook, 
         layoutHook = myLayoutHook,
         handleEventHook    = myEventHook,
-        startupHook        = myStartupHook >> addEWMHFullscreen
+        startupHook        = myStartupHook >> addEWMHFullscreen,
+
+        -- logHook = eventLogHookForPolyBar,
+        logHook = eventLogHookForPolyBar
     }
 
 eventLogHookForPolyBar = do
