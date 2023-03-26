@@ -13,7 +13,7 @@ import Data.Monoid ()
 import System.Exit ()
 import XMonad.Util.SpawnOnce ( spawnOnce )
 import Graphics.X11.ExtraTypes.XF86 (xF86XK_AudioLowerVolume, xF86XK_AudioRaiseVolume, xF86XK_AudioMute, xF86XK_MonBrightnessDown, xF86XK_MonBrightnessUp, xF86XK_AudioPlay, xF86XK_AudioPrev, xF86XK_AudioNext)
-import XMonad.Hooks.EwmhDesktops ( ewmh )
+import XMonad.Hooks.EwmhDesktops ( ewmh, disableEwmhManageDesktopViewport )
 import Control.Monad ( join, when )
 import XMonad.Layout.NoBorders
 import XMonad.Hooks.ManageDocks
@@ -62,7 +62,9 @@ import qualified XMonad.Layout.ToggleLayouts as T (toggleLayouts, ToggleLayout(T
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 
 import XMonad.Actions.MouseResize
+import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 
+import XMonad.Layout.IndependentScreens
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -177,8 +179,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --  Reset the layouts on the current workspace to default
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
 
-    -- Switch to layout FIXME:
-    -- , ((modm,               xK_m ), sendMessage $ JumpToLayout "full")
+    -- Switch to layout
+    , ((modm,               xK_m ), sendMessage $ JumpToLayout "monocle")
+    , ((modm,               xK_t ), sendMessage $ JumpToLayout "tall")
+
+    -- fullscreen
+    , ((modm .|. controlMask,               xK_f ), toggleFullscreen)
 
     -- Resize viewed windows to the correct size
     -- , ((modm,               xK_n     ), refresh)
@@ -202,12 +208,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Shrink the master area
     , ((modm,               xK_h     ), sendMessage Shrink)
-
     -- Expand the master area
     , ((modm,               xK_l     ), sendMessage Expand)
 
-    -- Push window back into tiling
-    , ((modm,               xK_t     ), withFocused $ windows . W.sink)
+    -- toggle focused window floating
+    , ((modm,               xK_f     ), withFocused toggleFloat)
 
     -- Increment the number of windows in the master area
     , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
@@ -331,7 +336,7 @@ myStartupHook = do
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad $ fullscreenSupport $ docks $ ewmh . pagerHints $ defaults
+main = xmonad $ fullscreenSupport $ docks $ ewmh . disableEwmhManageDesktopViewport . pagerHints $ defaults
 
 myBar = "polybar"
 
@@ -483,6 +488,23 @@ eventLogHookForPolyBar = do
           | currWs == ws = "[" ++ ws ++ "]"
           | otherwise    = " " ++ ws ++ " "
     wsStr currWs wss = join $ map (fmt currWs) $ sortBy (compare `on` (!! 0)) wss
+
+toggleFloat :: Window -> X ()
+toggleFloat w =
+  windows
+    ( \s ->
+        if M.member w (W.floating s)
+          then W.sink w s
+          else (W.float w (W.RationalRect (1 / 3) (1 / 4) (1 / 2) (1 / 2)) s)
+    )
+
+toggleFullscreen :: X ()
+toggleFullscreen =
+    withWindowSet $ \ws ->
+    withFocused $ \w -> do
+        let fullRect =  W.RationalRect 0 0 1 1
+        let isFullFloat = w `M.lookup` W.floating ws == Just fullRect
+        windows $ if isFullFloat then W.sink w else W.float w fullRect
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
 help :: String
