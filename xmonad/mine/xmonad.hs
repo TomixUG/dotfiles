@@ -65,6 +65,7 @@ import XMonad.Actions.MouseResize
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 
 import XMonad.Layout.IndependentScreens
+import XMonad.Actions.UpdatePointer
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -215,9 +216,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_f     ), withFocused toggleFloat)
 
     -- Increment the number of windows in the master area
-    , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
+    -- , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
     -- Deincrement the number of windows in the master area
-    , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
+    -- , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
@@ -246,11 +247,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     ++
 
     --
-    -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-    -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
-    --
-    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+    -- mod-{comma,period}, Switch to physical/Xinerama screens 1, 2, or 3
+    -- mod-shift-{comma,period}, Move client to screen 1, 2, or 3
+    -- [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
+    --     | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+    --     , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (\ws -> (windows . f $ ws) >> updatePointer (0.5, 0.5) (0, 0)))
+        | (key, sc) <- zip [xK_comma, xK_period] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 
