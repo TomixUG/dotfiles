@@ -75,7 +75,7 @@ import XMonad.Util.SpawnNamedPipe
 import Data.Maybe
 import System.IO
 import XMonad.Util.Run
-import XMonad.Util.Hacks (trayerPaddingXmobarEventHook)
+import XMonad.Util.Hacks (trayerPaddingXmobarEventHook, trayerAboveXmobarEventHook)
 import XMonad.Layout.Maximize
 
 
@@ -363,6 +363,7 @@ myEventHook = mempty
 -- By default, do nothing.
 myStartupHook = do
   spawnOnce "exec ~/.xmonad/scripts/autostart.sh"
+  spawn "exec ~/.xmonad/scripts/autostartMultiple.sh"
   setWMName "LG3D"
 
 -- scratchpads
@@ -586,7 +587,7 @@ defaults = def {
         -- logHook = eventLogHookForPolyBar <> updatePointer (0.5, 0.5) (0, 0),
         manageHook = myManageHook,
         layoutHook = myLayoutHook,
-        handleEventHook    = myEventHook <> trayerPaddingXmobarEventHook,
+        handleEventHook    = myEventHook <> trayerPaddingXmobarEventHook <> trayerAboveXmobarEventHook,
         startupHook        = myStartupHook >> addEWMHFullscreen
 
         -- logHook = eventLogHookForPolyBar,
