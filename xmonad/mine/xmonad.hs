@@ -67,8 +67,17 @@ import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 import XMonad.Layout.IndependentScreens
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.UpdateFocus
-
 import XMonad.Util.NamedScratchpad
+
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
+import XMonad.Util.SpawnNamedPipe
+import Data.Maybe
+import System.IO
+import XMonad.Util.Run
+import XMonad.Util.Hacks (trayerPaddingXmobarEventHook)
+import XMonad.Layout.Maximize
+
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -103,7 +112,13 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["\63083", "\63288", "\63306", "\61723", "\63107", "\63601", "\63391", "\61713", "\61884"]
+-- myWorkspaces    = ["\63083", "\63288", "\63306", "\61723", "\63107", "\63601", "\63391", "\61713", "\61884"]
+myWorkspaces = [" dev ", " www ", " sys ", " doc ", " vbox ", " chat ", " mus ", " vid ", " gfx "]
+-- myWorkspaces = withScreens 2 ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
+clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
+    where i = fromJust $ M.lookup ws myWorkspaceIndices
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -125,6 +140,10 @@ addEWMHFullscreen   = do
     wms <- getAtom "_NET_WM_STATE"
     wfs <- getAtom "_NET_WM_STATE_FULLSCREEN"
     mapM_ addNETSupported [wms, wfs]
+
+windowCount :: X (Maybe String)
+windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
+
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -188,7 +207,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_t ), sendMessage $ JumpToLayout "tall")
 
     -- fullscreen
-    , ((modm .|. controlMask,               xK_f ), toggleFullscreen)
+    -- , ((modm .|. controlMask,               xK_f ), toggleFullscreen)
+    , ((modm .|. controlMask,               xK_f ), withFocused (sendMessage . maximizeRestore))
 
     -- Resize viewed windows to the correct size
     -- , ((modm,               xK_n     ), refresh)
@@ -248,10 +268,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
-    --
+
     [((m .|. modm, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+    -- [((m .|. modm, k), windows $ onCurrentScreen f i)
+    --     | (i, k) <- zip (workspaces' conf) [xK_1 .. xK_9]
+    --     , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
 
     --
@@ -370,7 +393,34 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
 
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad $ fullscreenSupport $ docks $ ewmh . disableEwmhManageDesktopViewport . pagerHints $ defaults
+main = do
+  xmproc0 <- spawnPipe ("xmobar -x 0 $HOME/.config/xmobar/config.hs")
+  xmproc1 <- spawnPipe ("xmobar -x 1 $HOME/.config/xmobar/config.hs")
+  xmonad $ fullscreenSupport $ docks $ ewmh . disableEwmhManageDesktopViewport . pagerHints $ defaults {
+        logHook = dynamicLogWithPP $  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP
+        { ppOutput = \x -> hPutStrLn xmproc0 x   -- xmobar on monitor 1
+                        >> hPutStrLn xmproc1 x   -- xmobar on monitor 2
+        , ppCurrent = xmobarColor "#c792ea" "" . wrap
+                      ("<box type=Bottom width=2 mb=2 color=" ++ "#c792ea" ++ ">") "</box>"
+          -- Visible but not current workspace
+        , ppVisible = xmobarColor "#c792ea" "" . clickable
+          -- Hidden workspace
+        , ppHidden = xmobarColor "#82aaff" "" . wrap
+                     ("<box type=Top width=2 mt=2 color=" ++ "#82aaff" ++ ">") "</box>" . clickable
+          -- Hidden workspaces (no windows)
+        , ppHiddenNoWindows = xmobarColor "#82aaff" "" . clickable
+          -- Title of active window
+        , ppTitle = xmobarColor "#ffffff" "" . shorten 60
+          -- Separator character
+        , ppSep =  "<fc=" ++ "#434758" ++ "> <fn=1>|</fn> </fc>"
+          -- Urgent workspace
+        , ppUrgent = xmobarColor "#f07178" "" . wrap "!" "!"
+          -- Adding # of windows on current workspace to the bar
+        , ppExtras  = [windowCount]
+          -- order of things in xmobar
+        , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]
+        }
+    }
 
 myBar = "polybar"
 
@@ -386,7 +436,7 @@ mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
 -- limitWindows n sets maximum number of windows displayed for layout.
 -- mySpacing n sets the gap size around the windows.
 tall     = renamed [Replace "tall"]
-           $ limitWindows 5
+           -- $ limitWindows 5
            $ smartBorders
            $ windowNavigation
            $ addTabs shrinkText myTabTheme
@@ -459,15 +509,16 @@ myTabTheme = def { fontName            = "xft:SauceCodePro Nerd Font Mono:regula
 
 
 -- The layout hook
-myLayoutHook = avoidStruts
+myLayoutHook =   avoidStruts
                $ mouseResize
+               $ smartBorders
                $ windowArrange
                $ T.toggleLayouts floats
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
   where
-    myDefaultLayout = withBorder myBorderWidth 
+    myDefaultLayout = maximizeWithPadding 10 ( withBorder myBorderWidth
                                                tall
-                                           ||| monocle
+                                           ||| monocle)
                                            -- ||| floats
                                            -- ||| noBorders tabs
                                            -- ||| grid
@@ -477,39 +528,6 @@ myLayoutHook = avoidStruts
                                            -- ||| tallAccordion
                                            -- ||| wideAccordion
 
-
-
--- A structure containing your configuration settings, overriding
--- fields in the default config. Any you don't override, will
--- use the defaults defined in xmonad/XMonad/Config.hs
---
--- No need to modify this.
---
-defaults = def {
-      -- simple stuff
-        terminal           = myTerminal,
-        focusFollowsMouse  = myFocusFollowsMouse,
-        clickJustFocuses   = myClickJustFocuses,
-        borderWidth        = myBorderWidth,
-        modMask            = myModMask,
-        workspaces         = myWorkspaces,
-        normalBorderColor  = myNormalBorderColor,
-        focusedBorderColor = myFocusedBorderColor,
-
-      -- key bindings
-        keys               = myKeys,
-        mouseBindings      = myMouseBindings,
-
-      -- hooks, layouts
-        -- logHook = eventLogHookForPolyBar <> updatePointer (0.5, 0.5) (0, 0),
-        manageHook = myManageHook, 
-        layoutHook = myLayoutHook,
-        handleEventHook    = myEventHook,
-        startupHook        = myStartupHook >> addEWMHFullscreen,
-
-        -- logHook = eventLogHookForPolyBar,
-        logHook = eventLogHookForPolyBar
-    }
 
 eventLogHookForPolyBar = do
   winset <- gets windowset
@@ -542,6 +560,40 @@ toggleFullscreen =
         let fullRect =  W.RationalRect 0 0 1 1
         let isFullFloat = w `M.lookup` W.floating ws == Just fullRect
         windows $ if isFullFloat then W.sink w else W.float w fullRect
+
+-- A structure containing your configuration settings, overriding
+-- fields in the default config. Any you don't override, will
+-- use the defaults defined in xmonad/XMonad/Config.hs
+--
+-- No need to modify this.
+--
+defaults = def {
+      -- simple stuff
+        terminal           = myTerminal,
+        focusFollowsMouse  = myFocusFollowsMouse,
+        clickJustFocuses   = myClickJustFocuses,
+        borderWidth        = myBorderWidth,
+        modMask            = myModMask,
+        workspaces         = myWorkspaces,
+        normalBorderColor  = myNormalBorderColor,
+        focusedBorderColor = myFocusedBorderColor,
+
+      -- key bindings
+        keys               = myKeys,
+        mouseBindings      = myMouseBindings,
+
+      -- hooks, layouts
+        -- logHook = eventLogHookForPolyBar <> updatePointer (0.5, 0.5) (0, 0),
+        manageHook = myManageHook,
+        layoutHook = myLayoutHook,
+        handleEventHook    = myEventHook <> trayerPaddingXmobarEventHook,
+        startupHook        = myStartupHook >> addEWMHFullscreen
+
+        -- logHook = eventLogHookForPolyBar,
+
+    }
+
+
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
 help :: String
