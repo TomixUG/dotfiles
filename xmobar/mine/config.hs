@@ -36,9 +36,9 @@ Config { font            = "Ubuntu Bold 9"
                         -- Get kernel version (script found in .local/bin)
                     , Run Com "kernel" [] "kernel" 36000
                         -- Cpu usage in percent
-                    , Run Cpu ["-t", "<fn=2>\xf108</fn>  cpu: (<total>%)","-H","50","--high","red"] 20
+                    , Run Cpu ["-t", "<fn=2>\xf108</fn>  <total>%","-H","50","--high","red"] 20
                         -- Ram used number and percent
-                    , Run Memory ["-t", "<fn=2>\xf233</fn>  mem: <used>M (<usedratio>%)"] 20
+                    , Run Memory ["-t", "<fn=2>\xf233</fn>  <used>M (<usedratio>%)"] 20
                         -- Disk space free
                     , Run DiskU [("/", "<fn=2>\xf0c7</fn>  hdd: <free> free")] [] 60
                         -- Echos an "up arrow" icon in front of the uptime output.
@@ -57,12 +57,20 @@ Config { font            = "Ubuntu Bold 9"
                     , Run Date "<fn=2>\xf017</fn>  %b %d %Y - (%H:%M) " "date" 50
                         -- Script that dynamically adjusts xmobar padding depending on number of trayer icons.
                     , Run Com ".config/xmobar/trayer-padding-icon.sh" [] "trayerpad" 20
+
+
+                    
+                    -- Echos a "music" icon in front of the pacman updates.
+                    , Run Com "echo" ["<fn=2>\xf001</fn>"] "musicicon" 3600
+                    -- get music information
+                    , Run Com ".config/xmobar/music.sh" [] "music" 10
+
                         -- Prints out the left side items such as workspaces, layout, etc.
                     , Run UnsafeStdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "  %UnsafeStdinReader% }{ <box type=Bottom width=2 mb=2 color=#ffcb6b><fc=#ffcb6b><action=`alacritty -e htop`>%cpu%</action></fc></box>    <box type=Bottom width=2 mb=2 color=#f07178><fc=#f07178><action=`alacritty -e htop`>%memory%</action></fc></box>   <box type=Bottom width=2 mb=2 color=#c3e88d><fc=#c3e88d>%baticon%  %battery%</fc></box>    <box type=Bottom width=2 mb=2 color=#a3f7ff><fc=#a3f7ff><action=`emacsclient -c -a 'emacs' --eval '(doom/window-maximize-buffer(dt/year-calendar))'`>%date%</action></fc></box> %trayerpad%"
+       , template = "  %UnsafeStdinReader% }{ <box type=Bottom width=2 mb=2 color=#82aaff><fc=#82aaff><action=`playerctl play-pause` button=1><action=`playerctl next` button=3>%musicicon%  %music%</action></action></fc></box>    <box type=Bottom width=2 mb=2 color=#ffcb6b><fc=#ffcb6b><action=`alacritty -e htop`>%cpu%</action></fc></box>    <box type=Bottom width=2 mb=2 color=#f07178><fc=#f07178><action=`alacritty -e htop`>%memory%</action></fc></box>   <box type=Bottom width=2 mb=2 color=#c3e88d><fc=#c3e88d>%baticon%  %battery%</fc></box>    <box type=Bottom width=2 mb=2 color=#a3f7ff><fc=#a3f7ff><action=`emacsclient -c -a 'emacs' --eval '(doom/window-maximize-buffer(dt/year-calendar))'`>%date%</action></fc></box> %trayerpad%"
        }
 
 
