@@ -77,6 +77,7 @@ import System.IO
 import XMonad.Util.Run
 import XMonad.Util.Hacks (trayerPaddingXmobarEventHook, trayerAboveXmobarEventHook)
 import XMonad.Layout.Maximize
+import XMonad.Actions.CycleWS
 
 
 -- The preferred terminal program, which is used in a binding below and by
@@ -218,6 +219,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Move focus to the previous window
     , ((modm,               xK_k     ), windows W.focusUp  )
 
+    , ((modm,               xK_Left     ), prevWS )
+    , ((modm,               xK_Right     ), nextWS  )
+
     -- Move focus to the master window
     --
     , ((modm .|. shiftMask,               xK_m     ), windows W.focusMaster  )
@@ -275,6 +279,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- [((m .|. modm, k), windows $ onCurrentScreen f i)
     --     | (i, k) <- zip (workspaces' conf) [xK_1 .. xK_9]
     --     , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+    ++
+    -- the same thing but for Czech keyboard
+    [((m .|. modm, k), windows $ f i)
+        | (i, k) <- zip (XMonad.workspaces conf)
+                        [0x2b, 0x1ec, 0x1b9, 0x1e8, 0x1f8, 0x1be, 0xfd, 0xe1, 0xed, 0xe9]
+        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
+    ]
     ++
 
     --
