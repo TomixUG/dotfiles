@@ -23,3 +23,7 @@ setopt globdots # dot files in tab completion
 setopt sharehistory
 
 export EDITOR=nvim
+
+# ctrl + arrow keys
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
