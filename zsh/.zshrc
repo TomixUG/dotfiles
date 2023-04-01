@@ -1,5 +1,7 @@
 # eval "$(zellij setup --generate-auto-start zsh)"
-eval "$(starship init zsh)"
+# eval "$(starship init zsh)"
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 
 bindkey '^ ' autosuggest-accept # ctrl + enter to accept suggestion
 
