@@ -32,23 +32,23 @@ Config { font            = "Ubuntu Bold 9"
        , iconRoot     = ".xmonad/xpm/"  -- default: "."
        , commands = [
                         -- Echos a "penguin" icon in front of the kernel output.
-                      Run Com "echo" ["<fn=3>\xf17c</fn>"] "penguin" 3600
+                      -- Run Com "echo" ["<fn=3>\xf17c</fn>"] "penguin" 3600
                         -- Get kernel version (script found in .local/bin)
-                    , Run Com "kernel" [] "kernel" 36000
+                    -- , Run Com "kernel" [] "kernel" 36000
                         -- Cpu usage in percent
-                    , Run Cpu ["-t", "<fn=2>\xf108</fn>  <total>%","-H","50","--high","red"] 20
+                    Run Cpu ["-t", "<fn=2>\xf108</fn>  <total>%","-H","50","--high","red"] 20
                         -- Ram used number and percent
                     , Run Memory ["-t", "<fn=2>\xf233</fn>  <used>M (<usedratio>%)"] 20
                         -- Disk space free
-                    , Run DiskU [("/", "<fn=2>\xf0c7</fn>  hdd: <free> free")] [] 60
+                    -- , Run DiskU [("/", "<fn=2>\xf0c7</fn>  hdd: <free> free")] [] 60
                         -- Echos an "up arrow" icon in front of the uptime output.
-                    , Run Com "echo" ["<fn=2>\xf0aa</fn>"] "uparrow" 3600
+                    -- , Run Com "echo" ["<fn=2>\xf0aa</fn>"] "uparrow" 3600
                         -- Uptime
-                    , Run Uptime ["-t", "uptime: <days>d <hours>h"] 360
+                    -- , Run Uptime ["-t", "uptime: <days>d <hours>h"] 360
                         -- Echos a "bell" icon in front of the pacman updates.
-                    , Run Com "echo" ["<fn=2>\xf0f3</fn>"] "bell" 3600
+                    -- , Run Com "echo" ["<fn=2>\xf0f3</fn>"] "bell" 3600
                         -- Check for pacman updates (script found in .local/bin)
-                    , Run Com ".local/bin/pacupdate" [] "pacupdate" 36000
+                    -- , Run Com ".local/bin/pacupdate" [] "pacupdate" 36000
                         -- Echos a "battery" icon in front of the pacman updates.
                     , Run Com "echo" ["<fn=2>\xf242</fn>"] "baticon" 3600
                         -- Battery
@@ -56,19 +56,17 @@ Config { font            = "Ubuntu Bold 9"
                         -- Time and date
                     , Run Date "<fn=2>\xf017</fn>  %b %d %Y - (%H:%M) " "date" 50
                         -- Script that dynamically adjusts xmobar padding depending on number of trayer icons.
-                    , Run Com ".config/xmobar/trayer-padding-icon.sh" [] "trayerpad" 20
+                    , Run Com ".config/xmobar/trayer-padding-icon.sh" [] "trayerpad" 40
 
                     -- Echos a "music" icon in front of the pacman updates.
                     , Run Com "echo" ["<fn=2>\xf028</fn>"] "volumeicon" 3600
                     -- get music information
-                    , Run Com ".config/xmobar/audio.sh" ["status"] "volume" 1
+                    , Run Com ".config/xmobar/audio.sh" ["status"] "volume" 10
 
                     -- Echos a "volume" icon in front of the pacman updates.
                     , Run Com "echo" ["<fn=2>\xf001</fn>"] "musicicon" 3600
                     -- get music information
-                    , Run Com ".config/xmobar/music.sh" [] "music" 10
-
-
+                    , Run Com ".config/xmobar/music.sh" [] "music" 20
 
 
                         -- Prints out the left side items such as workspaces, layout, etc.
