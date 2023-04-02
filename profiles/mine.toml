@@ -4,9 +4,11 @@ start = [
 ]
 
 [dots]
-awesome = "mine"
+xmonad = "mine"
+xmobar = "mine"
 rofi = "default"
 dunst = "instantos"
 nvim = "mine"
 alacritty = "mine"
 zellij = "mine"
+picom = "mine"
