@@ -176,7 +176,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. mod1Mask,  xK_space  ), spawn "exec ~/.xmonad/scripts/keyswitch.sh")
     , ((modm,               xK_a     ), spawn "exec ~/.xmonad/scripts/assist/instantassist.sh")
     , ((modm,               xK_n     ), spawn "thunar")
-    , ((modm,               xK_b     ), spawn "brave")
+    , ((modm,               xK_b     ), spawn "firefox")
 
     -- close focused window
     , ((modm, xK_q     ), kill)
@@ -256,7 +256,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- scratchpads
     , ((modm,  xK_s     ), namedScratchpadAction myScratchPads "terminal")
-    -- , ((modm,  xK_s     ), namedScratchpadAction myScratchPads "mocp")
+    , ((modm,  xK_d     ), namedScratchpadAction myScratchPads "spotify")
 
     -- Quit xmonad
     , ((modm .|. controlMask, xK_q     ), spawn "~/.xmonad/scripts/shutdown.sh")
@@ -380,7 +380,7 @@ myStartupHook = do
 -- scratchpads
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
-                -- , NS "mocp" spawnMocp findMocp manageMocp
+                , NS "spotify" spawnSpotify findSpotify manageSpotify
                 ]
   where
     spawnTerm  = myTerminal ++ " -T scratchpad"
@@ -391,15 +391,14 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                  w = 0.6
                  t = 0.8 -h
                  l = 0.8 -w
-    -- spawnMocp  = myTerminal ++ " -t mocp -e mocp"
-    -- findMocp   = title =? "mocp"
-    -- manageMocp = customFloating $ W.RationalRect l t w h
-    --            where
-    --              h = 0.9
-    --              w = 0.9
-    --              t = 0.95 -h
-    --              l = 0.95 -w
-
+    spawnSpotify  = "LD_PRELOAD='/usr/lib/spotify-adblock.so /usr/lib/spotifywm.so' spotify"
+    findSpotify   = className =? "Spotify"
+    manageSpotify = customFloating $ W.RationalRect l t w h
+               where
+                 h = 0.6
+                 w = 0.6
+                 t = 0.8 -h
+                 l = 0.8 -w
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
