@@ -27,3 +27,19 @@ export EDITOR=nvim
 # ctrl + arrow keys
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
+
+
+# java
+export JAVA_HOME='/usr/lib/jvm/java-20-openjdk'
+export PATH=$JAVA_HOME/bin:$PATH
+
+# android stuff
+export ANDROID_SDK_ROOT='/opt/android-sdk'
+export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools/
+export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin/
+export PATH=$PATH:$ANDROID_ROOT/emulator
+export PATH=$PATH:$ANDROID_SDK_ROOT/tools/
+
+export CHROME_EXECUTABLE=/usr/bin/brave
+
+alias monitor='xrandr --output HDMI-0 --mode 1280x1024 --pos 1920x0 --rotate normal --output eDP-1-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1-1 --off'
