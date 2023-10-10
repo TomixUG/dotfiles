@@ -124,4 +124,11 @@ return {
   { "Mofiqul/vscode.nvim" },
   -- { "olimorris/onedarkpro.nvim" },
   { "navarasu/onedark.nvim" },
+  { "akinsho/flutter-tools.nvim" },
+  { "nvim-lua/plenary.nvim" },
+  { "stevearc/dressing.nvim" },
+  { "mfussenegger/nvim-dap" },
+
+  { "mattn/libcallex-vim", build = "make -C autoload" },
+  { "bytesnake/vim-graphical-preview", build = "cargo build --release" },
 }

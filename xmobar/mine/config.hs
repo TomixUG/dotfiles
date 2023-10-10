@@ -36,7 +36,7 @@ Config { font            = "Ubuntu Bold 9"
                         -- Get kernel version (script found in .local/bin)
                     -- , Run Com "kernel" [] "kernel" 36000
                         -- Cpu usage in percent
-                    Run Cpu ["-t", "<fn=2>\xf108</fn>  <total>%","-H","50","--high","red"] 20
+                    Run Cpu ["-t", "<fn=2>\xf2db</fn>  <total>%","-H","50","--high","red"] 20
                         -- Ram used percentage
                     , Run Memory ["-t", "<fn=2>\xf538</fn>  <usedratio>%"] 20
                         -- Disk space free
