@@ -1,0 +1,67 @@
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 7.5
+
+[font.bold]
+style = "Bold"
+
+[font.bold_italic]
+style = "Bold Italic"
+
+[font.italic]
+style = "Italic"
+
+[font.normal]
+family = "MesloLGS NF"
+style = "Regular"
+
+[font.offset]
+x = 1
+y = 1
+
+[scrolling]
+history = 5000
+
+[window]
+opacity = 0.9
+title = "Terminal"
+
+[window.class]
+general = "Alacritty"
+instance = "Alacritty"
+
+[window.padding]
+x = 6
+y = 6
+
+
+
+# Colors (Nord)
+# Default colors
+[colors.primary]
+background = '#2E3440'
+foreground = '#D8DEE9'
+
+# Normal colors
+[colors.normal]
+black   = '#3B4252'
+red     = '#BF616A'
+green   = '#A3BE8C'
+yellow  = '#EBCB8B'
+blue    = '#81A1C1'
+magenta = '#B48EAD'
+cyan    = '#88C0D0'
+white   = '#E5E9F0'
+
+# Bright colors
+[colors.bright]
+black   = '#4C566A'
+red     = '#BF616A'
+green   = '#A3BE8C'
+yellow  = '#EBCB8B'
+blue    = '#81A1C1'
+magenta = '#B48EAD'
+cyan    = '#8FBCBB'
+white   = '#ECEFF4'
