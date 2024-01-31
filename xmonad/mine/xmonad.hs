@@ -257,6 +257,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- scratchpads
     , ((modm,  xK_s     ), namedScratchpadAction myScratchPads "terminal")
     , ((modm,  xK_d     ), namedScratchpadAction myScratchPads "spotify")
+    , ((modm,  xK_c     ), namedScratchpadAction myScratchPads "calc")
 
     -- Quit xmonad
     , ((modm .|. controlMask, xK_q     ), spawn "~/.xmonad/scripts/shutdown.sh")
@@ -381,6 +382,7 @@ myStartupHook = do
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                 , NS "spotify" spawnSpotify findSpotify manageSpotify
+                , NS "calc" spawnCalc findCalc manageCalc
                 ]
   where
     spawnTerm  = myTerminal ++ " -T scratchpad"
@@ -394,6 +396,14 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
     spawnSpotify  = "LD_PRELOAD='/usr/lib/spotify-adblock.so /usr/lib/spotifywm.so' spotify"
     findSpotify   = className =? "Spotify"
     manageSpotify = customFloating $ W.RationalRect l t w h
+               where
+                 h = 0.6
+                 w = 0.6
+                 t = 0.8 -h
+                 l = 0.8 -w
+    spawnCalc  = "alacritty -T calc -e qalc"
+    findCalc   = title =? "calc"
+    manageCalc = customFloating $ W.RationalRect l t w h
                where
                  h = 0.6
                  w = 0.6
