@@ -5,9 +5,9 @@ ACTIVE=$(pactl list sinks | grep "Active Port:" | tail -1 | cut --delimiter=" " 
 # print it for the bar
 if [[ $1 = 'p' ]]; then
 	if [[ $ACTIVE = 'analog-output-speaker' ]]; then
-		echo "󰓃"
+		echo "<fn=2></fn>"
 	elif [[ $ACTIVE = 'analog-output-headphones' ]]; then
-		echo ""
+		echo "<fn=2> </fn>"
 	fi
 	exit 0
 fi
