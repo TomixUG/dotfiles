@@ -7,6 +7,7 @@
 -- Normally, you'd only override those defaults you care about.
 --
 import XMonad
+import XMonad.Actions.UpdatePointer
 import XMonad.Layout.Fullscreen
     ( fullscreenEventHook, fullscreenManageHook, fullscreenSupport, fullscreenFull )
 import Data.Monoid ()
@@ -351,6 +352,9 @@ myManageHook = fullscreenManageHook <+> manageDocks <+> composeAll
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
+    , title  =? "mogus"       --> doFloat
+    , title  =? "amogus screen freeze"       --> doFloat
+    , title  =? "Notion - Command Search"  --> doFloat
     , isFullscreen --> doFullFloat
                                  ] <+> namedScratchpadManageHook myScratchPads
 
@@ -393,7 +397,7 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                  w = 0.6
                  t = 0.8 -h
                  l = 0.8 -w
-    spawnSpotify  = "LD_PRELOAD='/usr/lib/spotify-adblock.so /usr/lib/spotifywm.so' spotify"
+    spawnSpotify  = "LD_PRELOAD=/usr/lib/spotify-adblock.so spotify"
     findSpotify   = className =? "Spotify"
     manageSpotify = customFloating $ W.RationalRect l t w h
                where
@@ -418,7 +422,7 @@ main = do
   xmproc0 <- spawnPipe ("xmobar -x 0 $HOME/.config/xmobar/config.hs")
   xmproc1 <- spawnPipe ("xmobar -x 1 $HOME/.config/xmobar/config.hs")
   xmonad $ fullscreenSupport $ docks $ ewmh . disableEwmhManageDesktopViewport . pagerHints $ defaults {
-        logHook = dynamicLogWithPP $  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP
+        logHook =  dynamicLogWithPP $  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP
         { ppOutput = \x -> hPutStrLn xmproc0 x   -- xmobar on monitor 1
                         >> hPutStrLn xmproc1 x   -- xmobar on monitor 2
         , ppCurrent = xmobarColor "#c792ea" "" . wrap
@@ -440,7 +444,7 @@ main = do
         , ppExtras  = [windowCount]
           -- order of things in xmobar
         , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]
-        }
+        } 
     }
 
 myBar = "polybar"

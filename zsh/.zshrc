@@ -11,6 +11,8 @@ antidote load
 
 alias ls='exa -F'
 alias z='zellij'
+alias q='qalc'
+alias open='xdg-open'
 
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
@@ -30,7 +32,7 @@ bindkey "^[[1;5D" backward-word
 
 
 # java
-export JAVA_HOME='/usr/lib/jvm/java-20-openjdk'
+export JAVA_HOME='/usr/lib/jvm/java-17-openjdk'
 export PATH=$JAVA_HOME/bin:$PATH
 
 # android stuff
@@ -44,35 +46,6 @@ export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 export CHROME_EXECUTABLE=/usr/bin/brave
 
-alias monitor='xrandr --output HDMI-0 --mode 1280x1024 --pos 1920x0 --rotate normal --output eDP-1-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1-1 --off'
-alias extractFrame='/home/tomso/Coding/bash/bashscripts/extractFrame'
-
-
-function android-demo-mode() {
-  CMD=$1
-
-  if [[ $CMD != "on" && $CMD != "off" ]]; then
-    echo "Usage: $0 [on|off] [hhmm]" >&2
-    return 1
-  fi
-
-  if [[ "$2" != "" ]]; then
-    HHMM="$2"
-  fi
-
-  adb shell settings put global sysui_demo_allowed 1
-
-  if [[ $CMD == "on" ]]; then
-    adb shell am broadcast -a com.android.systemui.demo -e command enter
-    if [[ "$HHMM" != "" ]]; then
-      adb shell am broadcast -a com.android.systemui.demo -e command clock -e hhmm ${HHMM}
-    fi
-    adb shell am broadcast -a com.android.systemui.demo -e command battery -e plugged false
-    adb shell am broadcast -a com.android.systemui.demo -e command battery -e level 100
-    adb shell am broadcast -a com.android.systemui.demo -e command network -e wifi show -e level 4
-    adb shell am broadcast -a com.android.systemui.demo -e command network -e mobile show -e datatype none -e level 4
-    adb shell am broadcast -a com.android.systemui.demo -e command notifications -e visible false
-  elif [[ $CMD == "off" ]]; then
-    adb shell am broadcast -a com.android.systemui.demo -e command exit
-  fi
-}
+alias monitor='xrandr --output HDMI-0 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output eDP-1-1 --mode 1920x1080 --pos 2560x360 --rotate normal --output DP-1-1 --off && xrandr --output HDMI-0 --mode 2560x1440 --rate 144'
+alias dmenu='rofi -dmenu -theme ~/.config/rofi/shutdown.rasi '
+alias weather='curl wttr.in'

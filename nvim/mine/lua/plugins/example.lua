@@ -131,4 +131,25 @@ return {
 
   { "mattn/libcallex-vim", build = "make -C autoload" },
   { "bytesnake/vim-graphical-preview", build = "cargo build --release" },
+  {
+    "iamcco/markdown-preview.nvim",
+    ft = "markdown",
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+    config = function()
+      vim.g.mkdp_browser = "firefox"
+      vim.g.mkdp_open_ip = "127.0.0.1"
+      vim.g.mkdp_port = 8080
+    end,
+    cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" },
+  }, -- preview markdown files on browser
+  {
+    "fpeterek/nvim-surfers",
+    config = function()
+      require("nvim-surfers").setup({
+        use_tmux = false,
+      })
+    end,
+  },
 }
