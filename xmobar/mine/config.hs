@@ -59,22 +59,22 @@ Config { font            = "Ubuntu Bold 9"
                     , Run Com ".config/xmobar/trayer-padding-icon.sh" [] "trayerpad" 40
 
                     -- Echos a "music" icon in front of the pacman updates.
-                    , Run Com "echo" ["<fn=2>\xf028</fn>"] "volumeicon" 3600
+                    , Run Com ".xmonad/scripts/toggleAudioOut.sh" ["p"] "volumeicon" 10
                     -- get music information
                     , Run Com ".config/xmobar/audio.sh" ["status"] "volume" 10
 
                     -- Echos a "volume" icon in front of the pacman updates.
+                    --, Run Com "echo" ["<fn=2>\xf001</fn>"] "musicicon" 3600
                     , Run Com "echo" ["<fn=2>\xf001</fn>"] "musicicon" 3600
                     -- get music information
                     , Run Com ".config/xmobar/music.sh" [] "music" 20
-
 
                         -- Prints out the left side items such as workspaces, layout, etc.
                     , Run UnsafeStdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "  %UnsafeStdinReader% }{ <box type=Bottom width=2 mb=2 color=#82aaff><fc=#82aaff><action=`dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause` button=1><action=`dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next` button=3>%musicicon%  %music%</action></action></fc></box>     <box type=Bottom width=2 mb=2 color=#C792EA><fc=#C792EA><action=`~/.config/xmobar/audio.sh up` button=4><action=`~/.config/xmobar/audio.sh down` button=5><action=`~/.config/xmobar/audio.sh mute` button=1>%volumeicon%  %volume%</action></action></action></fc></box>     <box type=Bottom width=2 mb=2 color=#ffcb6b><fc=#ffcb6b><action=`alacritty -e htop`>%cpu%</action></fc></box>    <box type=Bottom width=2 mb=2 color=#f07178><fc=#f07178><action=`alacritty -e htop`>%memory%</action></fc></box>   <box type=Bottom width=2 mb=2 color=#c3e88d><fc=#c3e88d>%baticon%  %battery%</fc></box>    <box type=Bottom width=2 mb=2 color=#a3f7ff><fc=#a3f7ff><action=`emacsclient -c -a 'emacs' --eval '(doom/window-maximize-buffer(dt/year-calendar))'`>%date%</action></fc></box> %trayerpad%"
+       , template = "  %UnsafeStdinReader% }{<box type=Bottom width=2 mb=2 color=#82aaff><fc=#82aaff><action=`dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause` button=1><action=`dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next` button=3>%musicicon%  %music%</action></action></fc></box>     <box type=Bottom width=2 mb=2 color=#C792EA><fc=#C792EA><action=`~/.config/xmobar/audio.sh up` button=4><action=`~/.config/xmobar/audio.sh down` button=5><action=`~/.config/xmobar/audio.sh mute` button=1><action=`.xmonad/scripts/toggleAudioOut.sh` button=3>%volumeicon%  %volume%</action></action></action></action></fc></box>     <box type=Bottom width=2 mb=2 color=#ffcb6b><fc=#ffcb6b><action=`alacritty -e htop`>%cpu%</action></fc></box>    <box type=Bottom width=2 mb=2 color=#f07178><fc=#f07178><action=`alacritty -e htop`>%memory%</action></fc></box>   <box type=Bottom width=2 mb=2 color=#c3e88d><fc=#c3e88d>%baticon%  %battery%</fc></box>    <box type=Bottom width=2 mb=2 color=#a3f7ff><fc=#a3f7ff><action=`emacsclient -c -a 'emacs' --eval '(doom/window-maximize-buffer(dt/year-calendar))'`>%date%</action></fc></box> %trayerpad%"
        }
 
 
