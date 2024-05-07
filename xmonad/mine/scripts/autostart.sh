@@ -31,7 +31,7 @@ blueman-applet &
 ## Mics
 kdeconnect-indicator &
 flameshot &
-webcord &
+vesktop &
 
 ## Wallpaper
 sleep 2
