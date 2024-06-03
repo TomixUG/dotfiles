@@ -48,4 +48,9 @@ export CHROME_EXECUTABLE=/usr/bin/brave
 
 alias monitor='xrandr --output HDMI-0 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output eDP-1-1 --mode 1920x1080 --pos 2560x360 --rotate normal --output DP-1-1 --off && xrandr --output HDMI-0 --mode 2560x1440 --rate 144'
 alias dmenu='rofi -dmenu -theme ~/.config/rofi/shutdown.rasi '
-alias weather='curl wttr.in'
+# alias weather='curl wttr.in/$1'
+
+function weather { curl "wttr.in/$1" }
+
+
+export UV_USE_IO_URING=0
