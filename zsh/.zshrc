@@ -6,7 +6,7 @@ POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 bindkey '^ ' autosuggest-accept # ctrl + enter to accept suggestion
 
 # source antidote
-source '/usr/share/zsh-antidote/antidote.zsh'
+source ~/.antidote/antidote.zsh
 antidote load
 
 alias ls='exa -F'
@@ -31,13 +31,17 @@ export EDITOR=nvim
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
+# flutter
+export PATH="/opt/flutter/bin:$PATH"
+
 
 # java
 export JAVA_HOME='/usr/lib/jvm/java-17-openjdk'
+#export JAVA_HOME='/usr/lib/jvm/java-11-openjdk'
 export PATH=$JAVA_HOME/bin:$PATH
 
 # android stuff
-export ANDROID_SDK_ROOT='/opt/android-sdk'
+export ANDROID_SDK_ROOT='/home/tomso/Android/Sdk'
 export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools/
 export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin/
 export PATH=$PATH:$ANDROID_ROOT/emulator
@@ -47,7 +51,8 @@ export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 export CHROME_EXECUTABLE=/usr/bin/brave
 
-alias monitor='xrandr --output HDMI-0 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output eDP-1-1 --mode 1920x1080 --pos 2560x360 --rotate normal --output DP-1-1 --off && xrandr --output HDMI-0 --mode 2560x1440 --rate 144'
+#alias monitor='xrandr --output HDMI-0 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output eDP-1-1 --mode 1920x1080 --pos 2560x360 --rotate normal --output DP-1-1 --off && xrandr --output HDMI-0 --mode 2560x1440 --rate 144'
+alias monitor='xrandr --output eDP-1 --mode 1920x1080 --pos 2560x252 --rotate normal --output DP-1 --off --output DP-2 --off --output DP-2 --off --output HDMI-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal'
 alias dmenu='rofi -dmenu -theme ~/.config/rofi/shutdown.rasi '
 # alias weather='curl wttr.in/$1'
 

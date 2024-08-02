@@ -172,7 +172,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,                 xK_Print), spawn "flameshot gui")
 
     -- My Stuff
-    , ((modm,               xK_y     ), spawn "exec ~/.xmonad/scripts/rofi/launcher")
+    , ((modm,               xK_y     ), spawn "bash ~/.xmonad/scripts/rofi/launcher")
     , ((modm .|. controlMask,  xK_space  ), spawn "exec ~/.xmonad/scripts/rofi/runner")
     , ((modm .|. mod1Mask,  xK_space  ), spawn "exec ~/.xmonad/scripts/keyswitch.sh")
     , ((modm,               xK_a     ), spawn "exec ~/.xmonad/scripts/assist/instantassist.sh")
