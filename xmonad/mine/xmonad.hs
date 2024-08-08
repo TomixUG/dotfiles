@@ -1,3 +1,4 @@
+
   --
 -- xmonad example config file.
 --
@@ -479,15 +480,15 @@ monocle  = renamed [Replace "monocle"]
 floats   = renamed [Replace "floats"]
            $ smartBorders
            $ simplestFloat
--- grid     = renamed [Replace "grid"]
---            $ limitWindows 9
---            $ smartBorders
---            $ windowNavigation
---            $ addTabs shrinkText myTabTheme
---            $ subLayout [] (smartBorders Simplest)
---            $ mySpacing 8
---            $ mkToggle (single MIRROR)
---            $ Grid (16/10)
+grid     = renamed [Replace "grid"]
+           $ limitWindows 9
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ mySpacing 8
+           $ mkToggle (single MIRROR)
+           $ Grid (16/10)
 -- spirals  = renamed [Replace "spirals"]
 --            $ limitWindows 9
 --            $ smartBorders
@@ -544,7 +545,7 @@ myLayoutHook =   avoidStruts
   where
     myDefaultLayout = maximizeWithPadding 10 ( withBorder myBorderWidth
                                                tall
-                                           ||| monocle)
+                                           ||| monocle ||| grid)
                                            -- ||| floats
                                            -- ||| noBorders tabs
                                            -- ||| grid

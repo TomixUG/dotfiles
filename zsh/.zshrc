@@ -1,7 +1,13 @@
+# tmux
+[ -z "$NOTMUX" ] && [ -z "$TMUX" ] && ! [ "$TERM_PROGRAM" = "vscode" ] && command -v tmux &> /dev/null && exec tmux && exit
+
 # eval "$(zellij setup --generate-auto-start zsh)"
 # eval "$(starship init zsh)"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+
+bindkey -v
+export KEYTIMEOUT=1
 
 bindkey '^ ' autosuggest-accept # ctrl + enter to accept suggestion
 
