@@ -15,9 +15,9 @@ plugins = [
 term_classed = "kitty --class"
 
 [scratchpads.term]
-animation = "fromTop"
-command = "[term_classed] main-dropterm"
-class = "main-dropterm"
+command = "alacritty --class termscratchpad"
+class = "termscratchpad"
 size = "75% 60%"
 max_size = "1920px 100%"
+margin = 50
 

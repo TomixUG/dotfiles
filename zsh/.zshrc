@@ -66,3 +66,5 @@ function weather { curl "wttr.in/$1" }
 
 
 export UV_USE_IO_URING=0
+
+clear
