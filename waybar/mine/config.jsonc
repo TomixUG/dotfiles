@@ -10,7 +10,8 @@
         "hyprland/workspaces",
         "sway/mode",
         "sway/scratchpad",
-        "custom/media"
+        "custom/media",
+        "custom/hyprland_clients"
     ],
     "modules-center": [
         "hyprland/window"
@@ -50,8 +51,12 @@
             "default": ""
         },
         "on-scroll-up": "hyprctl dispatch workspace e+1",
-        "on-scroll-down": "hyprctl dispatch workspace e-1"
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
 
+    },
+    "custom/hyprland_clients": {
+        "exec": "~/.config/waybar/scripts/hyprland_clients.sh",
+        "format": "[{}]"
     },
     "keyboard-state": {
         "numlock": true,

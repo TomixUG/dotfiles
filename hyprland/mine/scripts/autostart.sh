@@ -1,10 +1,13 @@
 #!/bin/sh
 
+# wallpaper
+waypaper --restore &
+
 # bar
 waybar &
 
 ## Power managment
-xfce4-power-manager &
+hypridle &
 
 ## Network manager
 nm-applet --indicator &
@@ -25,6 +28,9 @@ exec /usr/lib/mate-polkit/polkit-mate-authentication-agent-1 &
 exec /home/tomso/tools/libinput-three-finger-drag &
 
 sleep 5
-/home/tomso/.config/hypr/scripts/monitors.sh
 
+/home/tomso/.config/hypr/scripts/monitors.sh
 vesktop &
+
+sleep 5
+/home/tomso/.config/hypr/scripts/hyprland_ipc_script.sh &

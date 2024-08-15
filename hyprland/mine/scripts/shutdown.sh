@@ -1,14 +1,13 @@
 #!/bin/bash
 
-selection=$(echo -e "shutdown\nlogout\nreboot\nlock\nsuspend\nreload wm\nturn off screen" | rofi -dmenu -auto-select -theme ~/.config/rofi/shutdown.rasi)
+selection=$(echo -e "shutdown\nlogout\nreboot\nlock\nsuspend\nturn off screen" | rofi -dmenu -auto-select -theme ~/.config/rofi/shutdown.rasi)
 
 case $selection in
 shutdown) shutdown now ;;
-logout) killall xmonad-x86_64-linux ;;
+logout) loginctl terminate-user $USER ;;
 reboot) reboot ;;
-lock) slock ;;
+lock) hyprlock ;;
 suspend) systemctl suspend ;;
-"reload wm") echo 'awesome.restart()' | awesome-client ;;
-"turn off screen") xset dpms force off ;;
+"turn off screen") hyprctl dispatch dpms off ;;
 *) ;;
 esac
