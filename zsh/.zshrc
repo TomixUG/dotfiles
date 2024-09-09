@@ -1,5 +1,5 @@
 # tmux
-[ -z "$NOTMUX" ] && [ -z "$TMUX" ] && ! [ "$TERM_PROGRAM" = "vscode" ] && command -v tmux &> /dev/null && exec tmux && exit
+[ -z "$NOTMUX" ] && [ -z "$TMUX" ] && ! [ "$TERM_PROGRAM" = "vscode" ] && command -v tmux -2 &> /dev/null && exec tmux && exit
 
 # eval "$(zellij setup --generate-auto-start zsh)"
 # eval "$(starship init zsh)"
