@@ -41,6 +41,11 @@ return {
     "hrsh7th/nvim-cmp",
     opts = function()
       local cmp = require("cmp")
+
+      -- require("cmp").setup(opts)
+      -- require("cmp").setup.filetype("markdown", {
+      --   sources = {},
+      -- })
       return {
         completion = {
           completeopt = "menu,menuone,noinsert",
@@ -62,7 +67,7 @@ return {
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" },
-          { name = "buffer" },
+          -- { name = "buffer" }, -- TEXT FIELDS AHH
           { name = "path" },
         }),
         formatting = {
@@ -97,11 +102,22 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "svelte",
-      },
-    },
+    -- opts = {
+    --   ensure_installed = {
+    --     "svelte",
+    --   },
+    -- },
+    opts = function(_, opts)
+      opts.highlight = opts.highlight or {}
+      if type(opts.ensure_installed) == "table" then
+        vim.list_extend(opts.ensure_installed, { "bibtex" })
+      end
+      if type(opts.highlight.disable) == "table" then
+        vim.list_extend(opts.highlight.disable, { "latex" })
+      else
+        opts.highlight.disable = { "latex" }
+      end
+    end,
   },
   {
     "rcarriga/nvim-notify",
@@ -127,7 +143,7 @@ return {
   { "akinsho/flutter-tools.nvim" },
   { "nvim-lua/plenary.nvim" },
   { "stevearc/dressing.nvim" },
-  { "mfussenegger/nvim-dap" },
+  { "mfussenegger/nvim-dap", config = function() end },
 
   { "mattn/libcallex-vim", build = "make -C autoload" },
   { "bytesnake/vim-graphical-preview", build = "cargo build --release" },
@@ -151,5 +167,80 @@ return {
         use_tmux = false,
       })
     end,
+  },
+  {
+    "lervag/vimtex",
+    lazy = false, -- we don't want to lazy load VimTeX
+    -- tag = "v2.15", -- uncomment to pin to a specific release
+    init = function()
+      -- VimTeX configuration goes here, e.g.
+      vim.g.vimtex_view_method = "zathura"
+      vim.g.vimtex_complete_enabled = 1
+      -- vim.g.vimtex_compiler_method = "tectonic"
+      -- vim.g.vimtex_compiler_tectonic = {
+      --   options = {
+      --     "watch",
+      --   },
+      -- }
+      vim.g.vimtex_compiler_method = "generic"
+      vim.g.vimtex_compiler_generic = {
+        -- Well, it always returns 0 (succeeds)…
+        command = [[watchexec -e tex -e bib "
+                    echo vimtex_compiler_callback_compiling &&
+                    tectonic main.tex -Z continue-on-errors --keep-intermediates --synctex --keep-logs &&
+                    echo vimtex_compiler_callback_success ||
+                    echo vimtex_compiler_callback_failure
+                "]],
+      }
+    end,
+    keys = {
+      { "<localLeader>l", "", desc = "+vimtext" },
+    },
+  },
+  {
+    "neovim/nvim-lspconfig",
+    optional = true,
+    opts = {
+      servers = {
+        texlab = {
+          keys = {
+            { "<Leader>K", "<plug>(vimtex-doc-package)", desc = "Vimtex Docs", silent = true },
+          },
+        },
+      },
+    },
+  },
+  {
+    "L3MON4D3/LuaSnip",
+    lazy = true,
+    build = (not LazyVim.is_win())
+        and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
+      or nil,
+    dependencies = {
+      {
+        "rafamadriz/friendly-snippets",
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+        end,
+      },
+      {
+        "nvim-cmp",
+        dependencies = {
+          "saadparwaiz1/cmp_luasnip",
+        },
+        opts = function(_, opts)
+          opts.snippet = {
+            expand = function(args)
+              require("luasnip").lsp_expand(args.body)
+            end,
+          }
+          table.insert(opts.sources, { name = "luasnip" })
+        end,
+      },
+    },
+    opts = {
+      history = true,
+      delete_check_events = "TextChanged",
+    },
   },
 }
