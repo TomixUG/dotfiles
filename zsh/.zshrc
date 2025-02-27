@@ -1,5 +1,8 @@
+HISTSIZE=10000000
+SAVEHIST=10000000
+
 # tmux
-[ -z "$NOTMUX" ] && [ -z "$TMUX" ] && ! [ "$TERM_PROGRAM" = "vscode" ] && command -v tmux -2 &> /dev/null && exec tmux && exit
+[ -z "$NOTMUX" ] && [ -z "$TMUX" ] && ! [ "$TERM_PROGRAM" = "vscode" ] && command -v tmux &> /dev/null && exec tmux -2 && exit
 
 # eval "$(zellij setup --generate-auto-start zsh)"
 # eval "$(starship init zsh)"
@@ -61,10 +64,10 @@ export CHROME_EXECUTABLE=/usr/bin/brave
 alias monitor='xrandr --output eDP-1 --mode 1920x1080 --pos 2560x252 --rotate normal --output DP-1 --off --output DP-2 --off --output DP-2 --off --output HDMI-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal'
 alias dmenu='rofi -dmenu -theme ~/.config/rofi/shutdown.rasi '
 # alias weather='curl wttr.in/$1'
+alias lofi='mpv --no-video "https://www.youtube.com/watch?v=jfKfPfyJRdk"'
 
 function weather { curl "wttr.in/$1" }
 
 
 export UV_USE_IO_URING=0
 
-clear

@@ -182,16 +182,17 @@ return {
       --     "watch",
       --   },
       -- }
-      vim.g.vimtex_compiler_method = "generic"
-      vim.g.vimtex_compiler_generic = {
-        -- Well, it always returns 0 (succeeds)…
-        command = [[watchexec -e tex -e bib "
-                    echo vimtex_compiler_callback_compiling &&
-                    tectonic main.tex -Z continue-on-errors --keep-intermediates --synctex --keep-logs &&
-                    echo vimtex_compiler_callback_success ||
-                    echo vimtex_compiler_callback_failure
-                "]],
-      }
+      -- tectonic config:
+      -- vim.g.vimtex_compiler_method = "generic"
+      -- vim.g.vimtex_compiler_generic = {
+      --   -- Well, it always returns 0 (succeeds)…
+      --   command = [[watchexec -e tex -e bib "
+      --               echo vimtex_compiler_callback_compiling &&
+      --               tectonic main.tex -Z continue-on-errors --keep-intermediates --synctex --keep-logs &&
+      --               echo vimtex_compiler_callback_success ||
+      --               echo vimtex_compiler_callback_failure
+      --           "]],
+      -- }
     end,
     keys = {
       { "<localLeader>l", "", desc = "+vimtext" },

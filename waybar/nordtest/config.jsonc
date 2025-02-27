@@ -1,0 +1,211 @@
+{
+    "position": "top",
+    "layer": "top",
+    "height": 16,
+
+    // "modules-left": ["custom/launcher","custom/playerctl","custom/playerlabel","cava","hyprland/window"],
+    // "modules-center": ["hyprland/workspaces"],
+    // "modules-right": ["hyprland/language","disk","memory","cpu","custom/pacmanAlt","pulseaudio","clock"],
+
+    "modules-left": [ "hyprland/workspaces", "custom/hyprland_clients"],
+    "modules-center": [  "hyprland/window"],
+    "modules-right": ["hyprland/language", "temperature","battery","memory","cpu","pulseaudio","tray","clock"],
+
+    "custom/launcher": {
+			"format": "󰣇",
+			"on-click": "thunar",
+			"tooltip": "Thunar"
+		},
+  "hyprland/language": {
+    "format": " {}",
+    "format-en": "en",
+    "format-cs": "czech",
+    "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next",
+    "keyboard-name": "at-translated-set-2-keyboard"
+  },
+
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C {icon}",
+        "format": "{icon} {temperatureC}°C",
+        "format-icons": ["", "", ""]
+    },
+				
+"cava": {
+   //     "cava_config": "$XDG_CONFIG_HOME/cava/config",
+        "framerate": 30,
+        "autosens": 1,
+        "sensitivity": 1,
+        "bars": 14,
+        "lower_cutoff_freq": 50,
+        "higher_cutoff_freq": 10000,
+        "method": "pulse",
+        "source": "auto",
+        "stereo": true,
+        "reverse": false,
+        "bar_delimiter": 0,
+        "monstercat": false,
+        "waves": false,
+        "noise_reduction": 0.77,
+        "input_delay": 2,
+        "format-icons" : ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
+        "actions": {
+                   "on-click-right": "mode"
+                   }
+    },
+"clock": {
+        "interval": 1,    
+        "format": " {:%B %d  %H:%M}",
+        "format-alt": " {:%H:%M}",
+        "on-click-middle": "gnome-calendar",
+        "tooltip-format": "\n<span size='14pt' font='JetBrains Mono ExtraBold'>{calendar}</span>",
+        "calendar": {
+                    "mode"          : "month",
+                    "mode-mon-col"  : 3,
+                    "on-scroll"     : 1,
+                    "on-click-right": "mode",
+                    "format": {
+                              "months":     "<span color='#5e81ac'><b>{}</b></span>",
+                              "days":       "<span color='#88c0d0'><b>{}</b></span>",
+                              "weekdays":   "<span color='#d08770'><b>{}</b></span>",
+                              "today":      "<span color='#bf616a'><b><u>{}</u></b></span>"
+                              }
+                    }
+    },
+		"hyprland/workspaces": {
+			"active-only": false,
+			"all-outputs": true,
+			"disable-scroll": false,
+			"on-scroll-up": "hyprctl dispatch workspace e-1",
+			"on-scroll-down": "hyprctl dispatch workspace e+1",
+			"format": "{icon}",
+			"on-click": "activate",
+        "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6",
+            "7": "7",
+            "8": "8",
+            "9": "9",
+            "10": "10",
+            "urgent": "",
+            "focused": "",
+            "default": ""
+        },
+			"sort-by-number": true,
+		},
+    "custom/playerctl": {
+      "format": "{icon}",
+      "return-type": "json",
+      "exec": "playerctl --player=mpd -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+      "on-click": "playerctl --player=mpd play-pause",
+      "on-click-middle": "playerctl --player=mpd previous",
+      "on-click-right": "playerctl --player=mpd next",
+      "format-icons": {
+        "Playing": "<span foreground='#46c880'> </span>",
+        "Paused": "<span foreground='#cdd6f4'> </span>",
+      },
+    },
+    "custom/playerlabel": {
+      "format": "<span>{}</span>",
+      "return-type": "json",
+      "max-length": 48,
+      "exec": "playerctl --player=mpd -a metadata --format '{\"text\": \"{{title}} - {{markup_escape(artist)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(artist)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+      "on-click": "playerctl --player=mpd play-pause",
+      "on-click-middle": "playerctl --player=mpd previous",
+      "on-click-right": "playerctl --player=mpd next",
+    },
+		
+		"pulseaudio": {
+			"format": "<span size='12000'>{icon}</span> {volume}%",
+			"format-muted": "<span size='12000' foreground='#ff7eb6'>{icon}</span> {volume}%",
+      "format-icons": {
+          "headphone": "",
+          "hands-free": "",
+          "headset": "",
+          "phone": "",
+          "portable": "",
+          "car": "",
+          "default": ["", ""],
+			},
+			"on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+			"on-click-right": "pavucontrol",
+		},
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8,
+    },
+
+		"memory": {
+			"format": " {}%",
+			"format-alt": " {used}/{total} GiB",
+			"interval": 5,
+		},
+		"cpu": {
+			"format": "󰍛 {usage}%",
+			"format-alt": "󰍛 {avg_frequency} GHz",
+			"interval": 5,
+		},
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-full": "{icon}  {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{icon}  {time}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""]
+    },
+		"disk": {
+			"format": "󰋊 {}%",
+			"format-alt": "󰋊 {used}/{total} GiB",
+			"interval": 20,
+			"path": "/"
+		},
+
+		   "hyprland/window": {
+		    "format": "{}",
+            "max-length": 25,
+        "rewrite": {
+            "(.*) - Chromium": "🌎 $1",
+            "(.*) - Mozilla Firefox": "🌎 $1",
+            "(.*) - Thunar": " $1",
+            "(.*) - mpv": " $1",
+            
+            "(.*) - fish": " [$1]",
+            "(.*) - wezterm": " [$1]",
+            "(.*) - kitty": " [$1]",
+            "(.*) - nautilus": " $1",
+            "(.*) - Alacritty": " $1"
+
+            
+        },
+        "separate-outputs": true
+    },
+
+		"custom/pacmanAlt": {
+    			"format": " {}",
+    			"interval": 3600,
+    			"exec": "checkupdates | wc -l",
+    			"tooltip": false        
+    		},
+
+
+    "custom/hyprland_clients": {
+        "exec": "~/.config/waybar/scripts/hyprland_clients.sh",
+        "format": "[{}]"
+    },
+
+}
+
