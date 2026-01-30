@@ -19,9 +19,10 @@ MONITOR_HEIGHT=1440
 center_x=$((x - MONITOR_WIDTH / 2))
 center_y=$((y - MONITOR_HEIGHT / 2))
 
+# swayimg -s real -a freeze --config="font.color=#00000000" --config="font.shadow=#00000000" /tmp/assist/$fileName &
 swayimg -s real -a freeze --config="font.color=#00000000" --config="font.shadow=#00000000" /tmp/assist/$fileName &
-sleep 0.5
+# sleep 0.5
 
-rm /tmp/assist/$fileName
+# rm /tmp/assist/$fileName
 
 # hyprctl dispatch moveactive $center_x $center_y
